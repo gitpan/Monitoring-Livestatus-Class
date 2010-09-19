@@ -4,6 +4,12 @@ package # hide from pause
 use Moose;
 extends 'Monitoring::Livestatus::Class::Base::Table';
 
+sub build_table_name { return 'columns' };
+
+sub build_primary_keys { return [qw/name table/] };
+
+1;
+__END__
 =head1 NAME
 
 Monitoring::Livestatus::Class::Table::Columns - Class for columns table
@@ -12,15 +18,13 @@ Monitoring::Livestatus::Class::Table::Columns - Class for columns table
 
 =head2 build_table_name
 
+=head2 build_primary_keys
+
 Returns the table name from these class.
-
-=cut
-
-sub build_table_name { return 'columns' };
 
 =head1 AUTHOR
 
-Robert Bohne, C<< <rbo at cpan.org> >>
+See L<Monitoring::Livestatus::Class/AUTHOR> and L<Monitoring::Livestatus::Class/CONTRIBUTORS>.
 
 =head1 COPYRIGHT & LICENSE
 
@@ -33,4 +37,3 @@ by the Free Software Foundation; or the Artistic License.
 See http://dev.perl.org/licenses/ for more information.
 
 =cut
-1;

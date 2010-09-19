@@ -1,25 +1,30 @@
-package # hide from pause 
+package # hide from pause
     Monitoring::Livestatus::Class::Table::Servicegroups;
 
 use Moose;
 extends 'Monitoring::Livestatus::Class::Base::Table';
+
+sub build_table_name { return 'servicegroups' };
+
+sub build_primary_keys { return [qw/name/] };
+
+1;
+__END__
 =head1 NAME
 
-Monitoring::Livestatus::Class::Table::Columns - Class for servicegroups table
+Monitoring::Livestatus::Class::Table::Servicegroups - Class for servicegroups table
 
 =head1 METHODS
 
 =head2 build_table_name
 
+=head2 build_primary_keys
+
 Returns the table name from these class.
-
-=cut
-
-sub build_table_name { return 'servicegroups' };
 
 =head1 AUTHOR
 
-Robert Bohne, C<< <rbo at cpan.org> >>
+See L<Monitoring::Livestatus::Class/AUTHOR> and L<Monitoring::Livestatus::Class/CONTRIBUTORS>.
 
 =head1 COPYRIGHT & LICENSE
 

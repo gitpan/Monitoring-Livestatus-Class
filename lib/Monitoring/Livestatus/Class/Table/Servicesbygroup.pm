@@ -1,18 +1,19 @@
 package # hide from pause
-    Monitoring::Livestatus::Class::Table::Hosts;
+    Monitoring::Livestatus::Class::Table::Servicesbygroup;
 
 use Moose;
 extends 'Monitoring::Livestatus::Class::Base::Table';
 
-sub build_table_name { return 'hosts' };
+sub build_table_name { return 'servicesbygroup' };
 
-sub build_primary_keys { return [qw/name/] };
+sub build_primary_keys { return [] };
 
 1;
 __END__
+
 =head1 NAME
 
-Monitoring::Livestatus::Class::Table::Hosts - Class for hosts table
+Monitoring::Livestatus::Class::Table::Servicesbygroup - Class for servicesbygroup table
 
 =head1 METHODS
 

@@ -1,4 +1,4 @@
-package # Hide from pause 
+package # Hide from pause
     Monitoring::Livestatus::Class::Abstract::Filter;
 
 use Moose;
@@ -12,7 +12,8 @@ sub build_mode { return 'Filter'; };
 __END__
 =head1 NAME
 
-Monitoring::Livestatus::Class::Abstract::Filter - Class to generate livestatus filters
+Monitoring::Livestatus::Class::Abstract::Filter - Class to generate livestatus
+filters
 
 =head2 SYNOPSIS
 
@@ -24,7 +25,7 @@ Monitoring::Livestatus::Class::Abstract::Filter - Class to generate livestatus f
 
 please view in L<Monitoring::Livestatus::Class::Base::Abstract>
 
-=head1 INTERNAL METHODS
+=head1 INTERNAL METHODS
 
 =over 4
 
@@ -34,7 +35,7 @@ please view in L<Monitoring::Livestatus::Class::Base::Abstract>
 
 =head1 AUTHOR
 
-Robert Bohne, C<< <rbo at cpan.org> >>
+See L<Monitoring::Livestatus::Class/AUTHOR> and L<Monitoring::Livestatus::Class/CONTRIBUTORS>.
 
 =head1 COPYRIGHT & LICENSE
 

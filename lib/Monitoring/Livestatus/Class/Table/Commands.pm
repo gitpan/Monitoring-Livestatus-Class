@@ -1,10 +1,10 @@
 package # hide from pause
-    Monitoring::Livestatus::Class::Table::Hosts;
+    Monitoring::Livestatus::Class::Table::Commands;
 
 use Moose;
 extends 'Monitoring::Livestatus::Class::Base::Table';
 
-sub build_table_name { return 'hosts' };
+sub build_table_name { return 'commands' };
 
 sub build_primary_keys { return [qw/name/] };
 
@@ -12,7 +12,7 @@ sub build_primary_keys { return [qw/name/] };
 __END__
 =head1 NAME
 
-Monitoring::Livestatus::Class::Table::Hosts - Class for hosts table
+Monitoring::Livestatus::Class::Table::Commands - Class for commands table
 
 =head1 METHODS
 

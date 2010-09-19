@@ -1,25 +1,31 @@
-package # hide from pause 
+package # hide from pause
     Monitoring::Livestatus::Class::Table::Status;
 
 use Moose;
 extends 'Monitoring::Livestatus::Class::Base::Table';
+
+sub build_table_name { return 'status' };
+
+sub build_primary_keys { return [] };
+
+1;
+__END__
+
 =head1 NAME
 
-Monitoring::Livestatus::Class::Table::Columns - Class for status table
+Monitoring::Livestatus::Class::Table::Status - Class for status table
 
 =head1 METHODS
 
 =head2 build_table_name
 
+=head2 build_primary_keys
+
 Returns the table name from these class.
-
-=cut
-
-sub build_table_name { return 'status' };
 
 =head1 AUTHOR
 
-Robert Bohne, C<< <rbo at cpan.org> >>
+See L<Monitoring::Livestatus::Class/AUTHOR> and L<Monitoring::Livestatus::Class/CONTRIBUTORS>.
 
 =head1 COPYRIGHT & LICENSE
 
@@ -32,4 +38,3 @@ by the Free Software Foundation; or the Artistic License.
 See http://dev.perl.org/licenses/ for more information.
 
 =cut
-1;

@@ -1,4 +1,4 @@
-package # hide from pause 
+package # hide from pause
     Monitoring::Livestatus::Class::Base::Table;
 
 use Moose;
@@ -7,15 +7,18 @@ use Carp;
 use Monitoring::Livestatus::Class::Abstract::Filter;
 use Monitoring::Livestatus::Class::Abstract::Stats;
 
+use Monitoring::Livestatus::Class;
+my $TRACE = Monitoring::Livestatus::Class->TRACE() || 0;
+
 has 'ctx' => (
     is => 'rw',
     isa => 'Monitoring::Livestatus::Class',
     handles => [qw/backend_obj/],
 );
 
-# 
+#
 #  Filter Stuff
-#  
+#
 has 'filter_obj' => (
     is => 'ro',
     isa => 'Monitoring::Livestatus::Class::Abstract::Filter',
@@ -36,9 +39,15 @@ sub filter {
     return $self;
 }
 
-# 
+sub options {
+    my($self, $options) = @_;
+    $self->{'_options'} = $options;
+    return $self;
+}
+
+#
 #  Stats Stuff
-# 
+#
 has 'stats_obj' => (
     is => 'ro',
     isa => 'Monitoring::Livestatus::Class::Abstract::Stats',
@@ -59,9 +68,6 @@ sub stats {
     return $self;
 }
 
-
-
-
 has 'table_name' => (
     is => 'ro',
     isa => 'Str',
@@ -70,6 +76,33 @@ has 'table_name' => (
 
 sub build_table_name { die "build_table_name must be implemented in " . ref(shift) };
 
+# 
+# Primary key stuff
+# 
+has 'primary_keys' => (
+    is => 'ro',
+    isa => 'ArrayRef[Str]',
+    builder  => 'build_primary_keys',
+);
+
+sub build_primary_keys { die "build_primary_keys must be implemented in " . ref(shift) };
+
+sub has_single_primary_key {
+    my $self = shift;
+    if ( scalar @{ $self->primary_keys } == 1 ){
+        return 1
+    }
+    return;
+}
+
+sub single_primary_key {
+    my $self = shift;
+    if ( $self->has_single_primary_key ){
+        return $self->primary_keys->[0];
+    }
+    return;
+}
+
 has '_statments' => (
     is => 'rw',
     reader => 'statments',
@@ -77,6 +110,11 @@ has '_statments' => (
     default => sub { return []; }
 );
 
+has '_options' => (
+    is => 'rw',
+    isa => 'HashRef',
+    default => sub { return {}; }
+);
 
 has '_columns' => (
     is => 'rw',
@@ -113,6 +151,25 @@ sub hashref_array {
     return wantarray ? @data : \@data;
 }
 
+sub hashref_pk {
+    my $self = shift;
+    my $key  = $self->single_primary_key || shift;
+    unless ( $key ) {
+        croak("There was no single primary key to be found.");
+    };
+    my %indexed;
+    my @data = $self->hashref_array();
+    for my $row (@data) {
+        if(!defined $row->{$key}) {
+            my %possible_keys = keys %{$row};
+            croak("key $key not found in result set, possible keys are: ".join(', ', sort keys %possible_keys));
+        } else {
+            $indexed{$row->{$key}} = $row;
+        }
+    }
+    return wantarray ? %indexed : \%indexed;
+}
+
 sub _execute {
     my $self = shift;
     my @data = @_;
@@ -122,11 +179,14 @@ sub _execute {
     push @statments, @data;
 
     printf STDERR "EXECUTE: %s\n", join("\nEXECUTE: ",@statments)
-        if $Monitoring::Livestatus::Class::TRACE >= 1;
+        if $TRACE >= 1;
 
     my $statment = join("\n",@statments);
 
-    my $return = $self->backend_obj->selectall_arrayref($statment, { slice => {} });
+    my $options = $self->{'_options'};
+    $options->{'slice'} = {};
+
+    my $return = $self->backend_obj->selectall_arrayref($statment, $options);
 
     return wantarray ? @{ $return }  : $return;
 }
@@ -168,7 +228,11 @@ Containts the table name.
 
 =head2 statments
 
-Containts the all statments.
+Containts all the statments.
+
+=head2 options
+
+Containts all the options.
 
 =head1 METHODS
 
@@ -182,7 +246,8 @@ Set columns...
 
 =head2 headers
 
-Returns a array or reference to array, depending on the calling context, of all header columns.
+Returns a array or reference to array, depending on the calling context, of all
+header columns.
 
 =head2 filter
 
@@ -204,11 +269,26 @@ Example usage:
     print Dumper $hashref_array;
 
 
+=head2 hashref_pk
+
+Returns a hash of hash references.
+
+Example usage:
+
+    my $hashref_pk = $table_obj->search( { } )->hashref_pk();
+    print Dumper $hashref_pk;
+
+=head2 has_single_primary_key
+
+=head2 single_primary_key
+
 =head2 build_table_name
+
+=head2 build_primary_keys
 
 =head1 AUTHOR
 
-Robert Bohne, C<< <rbo at cpan.org> >>
+See L<Monitoring::Livestatus::Class/AUTHOR> and L<Monitoring::Livestatus::Class/CONTRIBUTORS>.
 
 =head1 COPYRIGHT & LICENSE
 
