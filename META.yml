@@ -21,10 +21,11 @@ no_index:
     - inc
     - t
 requires:
+  Class::Load: 0
   Module::Find: 0
   Monitoring::Livestatus: 0.54
   Moose: 0
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/rbo/Monitoring-Livestatus-Class
-version: 0.04
+version: 0.05

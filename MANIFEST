@@ -40,5 +40,6 @@ t/10-filter.t
 t/20-complex_filter.t
 t/30-stats.t
 t/40-live_tests.t
+t/50-memory-leaks.t
 t/pod-coverage.t
 t/pod.t
