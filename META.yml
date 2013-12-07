@@ -28,4 +28,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/rbo/Monitoring-Livestatus-Class
-version: 0.05
+version: 0.06
